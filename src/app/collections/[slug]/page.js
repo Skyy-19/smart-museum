@@ -173,8 +173,7 @@ export default function Detail() {
             )}
 
             <p>
-              QR ini berisi link halaman detail koleksi. Admin dapat mencetak
-              dan menempel pada benda museum.
+              QR ini berisi link halaman detail koleksi.
             </p>
           </div>
         </div>
