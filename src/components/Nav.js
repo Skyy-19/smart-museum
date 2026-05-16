@@ -1,31 +1,33 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { supabase, hasSupabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
 
 export default function Nav() {
   const router = useRouter();
 
+  const [open, setOpen] = useState(false);
   const [user, setUser] = useState(null);
-  const [role, setRole] = useState("");
+  const [role, setRole] = useState("user");
 
   useEffect(() => {
     async function loadUser() {
       if (!hasSupabase) return;
 
       const {
-        data: { user },
-      } = await supabase.auth.getUser();
+        data: { session },
+      } = await supabase.auth.getSession();
 
-      setUser(user || null);
+      const currentUser = session?.user || null;
+      setUser(currentUser);
 
-      if (user) {
+      if (currentUser) {
         const { data: profile } = await supabase
           .from("profiles")
           .select("role")
-          .eq("id", user.id)
+          .eq("id", currentUser.id)
           .single();
 
         setRole(profile?.role || "user");
@@ -36,53 +38,144 @@ export default function Nav() {
 
     if (!hasSupabase) return;
 
-    const { data: listener } = supabase.auth.onAuthStateChange(() => {
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange(() => {
       loadUser();
     });
 
     return () => {
-      listener?.subscription?.unsubscribe();
+      subscription.unsubscribe();
     };
   }, []);
 
   async function logout() {
-    if (!hasSupabase) return;
+    if (hasSupabase) {
+      await supabase.auth.signOut();
+    }
 
-    await supabase.auth.signOut();
     setUser(null);
-    setRole("");
-    router.push("/login");
+    setRole("user");
+    setOpen(false);
+    router.push("/");
+  }
+
+  function closeMenu() {
+    setOpen(false);
   }
 
   return (
-    <nav className="nav">
-      <div className="container navin">
-        <Link href="/" className="brand">
-          <span>🏛️</span>
-          Smart Museum
-        </Link>
+    <>
+      <header className="nav">
+        <div className="container navin">
+          <Link className="brand" href="/" onClick={closeMenu}>
+            <span className="brandIcon">🏛️</span>
+            <span>Smart Museum</span>
+          </Link>
 
-        <div className="links">
-          <Link href="/">Home</Link>
-          <Link href="/#koleksi">Koleksi</Link>
-          <Link href="/scan">Scan QR</Link>
-          <Link href="/game">Game</Link>
+          <nav className="links desktopLinks">
+            <Link href="/">Home</Link>
+            <Link href="/#koleksi">Koleksi</Link>
+            <Link href="/scan">Scan QR</Link>
+            <Link href="/game">Game</Link>
 
-          {user && <Link href="/bookmarks">Bookmark</Link>}
-          {user && <Link href="/activity">Aktivitas</Link>}
-          {role === "admin" && <Link href="/admin">Admin</Link>}
+            {user && <Link href="/bookmarks">Bookmark</Link>}
+            {user && <Link href="/activity">Aktivitas</Link>}
+            {user && role === "admin" && <Link href="/admin">Admin</Link>}
 
-          {!user ? (
-            <Link className="active" href="/login">
-              Login
-            </Link>
-          ) : (
-            <button className="btn primary" onClick={logout}>
-              Logout
-            </button>
-          )}
+            {user ? (
+              <button className="logoutBtn" onClick={logout}>
+                Logout
+              </button>
+            ) : (
+              <Link className="loginBtn" href="/login">
+                Login
+              </Link>
+            )}
+          </nav>
+
+          <button
+            className="mobileMenuBtn"
+            onClick={() => setOpen(true)}
+            aria-label="Buka menu"
+          >
+            ☰
+          </button>
         </div>
-      </div>
-    </nav>
+      </header>
+
+      {open && (
+        <div className="mobileMenuOverlay">
+          <div className="mobileMenu">
+            <div className="mobileMenuTop">
+              <Link className="mobileBrand" href="/" onClick={closeMenu}>
+                🏛️ Smart Museum
+              </Link>
+
+              <button className="mobileClose" onClick={closeMenu}>
+                ×
+              </button>
+            </div>
+
+            <div className="mobileMenuLinks">
+              <Link href="/" onClick={closeMenu}>
+                <span>🏠</span>
+                Home
+              </Link>
+
+              <Link href="/#koleksi" onClick={closeMenu}>
+                <span>🖼️</span>
+                Koleksi
+              </Link>
+
+              <Link href="/scan" onClick={closeMenu}>
+                <span>📷</span>
+                Scan QR
+              </Link>
+
+              <Link href="/game" onClick={closeMenu}>
+                <span>🎮</span>
+                Game
+              </Link>
+
+              {user && (
+                <Link href="/bookmarks" onClick={closeMenu}>
+                  <span>⭐</span>
+                  Bookmark
+                </Link>
+              )}
+
+              {user && (
+                <Link href="/activity" onClick={closeMenu}>
+                  <span>📊</span>
+                  Aktivitas
+                </Link>
+              )}
+
+              {user && role === "admin" && (
+                <Link href="/admin" onClick={closeMenu}>
+                  <span>⚙️</span>
+                  Admin
+                </Link>
+              )}
+
+              <div className="mobileMenuDivider"></div>
+
+              {user ? (
+                <button className="mobileLogout" onClick={logout}>
+                  <span>🚪</span>
+                  Logout
+                </button>
+              ) : (
+                <Link className="mobileLogin" href="/login" onClick={closeMenu}>
+                  <span>➡️</span>
+                  Login
+                </Link>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   );
 }
