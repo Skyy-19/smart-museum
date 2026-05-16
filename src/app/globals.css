@@ -1019,7 +1019,7 @@ select {
   }
 }
 
-/* PREMIUM MOBILE UI - SMART MUSEUM  */
+/* MOBILE UI */
 .mobileMenuBtn {
   display: none;
 }
@@ -1594,56 +1594,93 @@ select {
   }
 }
 
-/* DESKTOP NAV FIX */
+/* DESKTOP NAV */
+
 @media (min-width: 769px) {
-  .navin {
+  .nav {
     height: 76px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  }
+
+  .navin {
+    height: 76px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 18px;
+  }
+
+  .brand {
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    font-size: 22px !important;
+    font-weight: 950 !important;
+    white-space: nowrap !important;
+    line-height: 1 !important;
+    flex-shrink: 0;
+  }
+
+  .brand span {
+    white-space: nowrap !important;
+  }
+
+  .brandIcon {
+    flex-shrink: 0;
   }
 
   .desktopLinks {
     display: flex !important;
-    align-items: center;
-    gap: 10px;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    gap: 10px !important;
+    flex-wrap: nowrap !important;
+    width: 100%;
   }
 
   .desktopLinks a,
   .desktopLinks button {
-    height: 44px;
-    padding: 0 22px;
-    border-radius: 16px;
-    border: 1px solid #e2e8f0;
-    background: #ffffff;
-    color: #0f172a;
-    font-size: 15px;
-    font-weight: 900;
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    box-shadow: 0 8px 22px rgba(15, 23, 42, 0.06);
-    transition: 0.2s ease;
+    height: 44px !important;
+    padding: 0 18px !important;
+    border-radius: 16px !important;
+    border: 1px solid #e2e8f0 !important;
+    background: #ffffff !important;
+    color: #0f172a !important;
+    font-size: 15px !important;
+    font-weight: 900 !important;
+    line-height: 1 !important;
+    text-decoration: none !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer !important;
+    white-space: nowrap !important;
+    min-width: max-content !important;
+    box-shadow: 0 8px 22px rgba(15, 23, 42, 0.06) !important;
+    transition: 0.2s ease !important;
   }
 
   .desktopLinks a:hover,
   .desktopLinks button:hover {
     transform: translateY(-2px);
-    box-shadow: 0 12px 28px rgba(15, 23, 42, 0.1);
+    box-shadow: 0 12px 28px rgba(15, 23, 42, 0.1) !important;
+  }
+
+  .desktopLinks a[href="/scan"] {
+    min-width: 120px !important;
   }
 
   .desktopLinks .loginBtn,
   .desktopLinks .logoutBtn {
-    background: #059669;
-    color: white;
-    border-color: #059669;
+    min-width: 105px !important;
+    background: #059669 !important;
+    color: #ffffff !important;
+    border-color: #059669 !important;
   }
 
   .desktopLinks .loginBtn:hover,
   .desktopLinks .logoutBtn:hover {
-    background: #047857;
+    background: #047857 !important;
+    border-color: #047857 !important;
   }
 
   .mobileMenuBtn,
