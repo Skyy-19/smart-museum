@@ -1593,3 +1593,61 @@ select {
     font-size: 18px !important;
   }
 }
+
+/* DESKTOP NAV FIX */
+@media (min-width: 769px) {
+  .navin {
+    height: 76px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .desktopLinks {
+    display: flex !important;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .desktopLinks a,
+  .desktopLinks button {
+    height: 44px;
+    padding: 0 22px;
+    border-radius: 16px;
+    border: 1px solid #e2e8f0;
+    background: #ffffff;
+    color: #0f172a;
+    font-size: 15px;
+    font-weight: 900;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 8px 22px rgba(15, 23, 42, 0.06);
+    transition: 0.2s ease;
+  }
+
+  .desktopLinks a:hover,
+  .desktopLinks button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px rgba(15, 23, 42, 0.1);
+  }
+
+  .desktopLinks .loginBtn,
+  .desktopLinks .logoutBtn {
+    background: #059669;
+    color: white;
+    border-color: #059669;
+  }
+
+  .desktopLinks .loginBtn:hover,
+  .desktopLinks .logoutBtn:hover {
+    background: #047857;
+  }
+
+  .mobileMenuBtn,
+  .mobileMenuOverlay {
+    display: none !important;
+  }
+}
