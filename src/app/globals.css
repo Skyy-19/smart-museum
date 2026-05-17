@@ -1208,8 +1208,9 @@ select {
   .hero {
     min-height: auto !important;
     background:
-      linear-gradient(150deg, rgba(2, 44, 34, 0.9), rgba(5, 150, 105, 0.72)),
-      var(--hero-bg, none);
+      linear-gradient(150deg, rgba(2, 44, 34, 0.78), rgba(5, 150, 105, 0.58)),
+      url("https://wmjgrmlcitjcwsdofzea.supabase.co/storage/v1/object/public/collections/Hero-section.jpg")
+        center/cover no-repeat !important;
   }
 
   .heroInner {
